@@ -1,4 +1,9 @@
-# SleekTabs
+# Sleek Tabs
+
+Part of the [Sleek](https://github.com/SleekGPX) tab-tooling line — this one
+targets Windows 11 File Explorer's native tabs specifically (as opposed to
+tabs in other apps, which is why this repo is named for Explorer rather than
+just "tabs").
 
 A [Windhawk](https://windhawk.net/) mod for Windows 11's native File Explorer
 tabs. Two independent tweaks, each with its own on/off setting:

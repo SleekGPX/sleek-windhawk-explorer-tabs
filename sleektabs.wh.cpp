@@ -1,10 +1,10 @@
 // ==WindhawkMod==
-// @id              sleektabs
-// @name            SleekTabs
+// @id              sleek-tabs
+// @name            Sleek Tabs
 // @description     File Explorer tab tweaks: folder name instead of full path, and jump to newly opened tabs (each independently toggleable)
 // @version         1.1.0
 // @author          SleekGPX
-// @github          https://github.com/SleekGPX
+// @github          https://github.com/SleekGPX/sleek-windhawk-explorer-tabs
 // @include         explorer.exe
 // @architecture    x86-64
 // ==/WindhawkMod==
