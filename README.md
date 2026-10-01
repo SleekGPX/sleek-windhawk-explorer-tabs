@@ -1,4 +1,4 @@
-# Sleek Tabs
+# Sleek WinTabs
 
 Part of the [Sleek](https://github.com/SleekGPX) tab-tooling line — this one
 targets Windows 11 File Explorer's native tabs specifically (as opposed to
@@ -25,7 +25,7 @@ settings.
 
 1. Install [Windhawk](https://windhawk.net/) if you don't have it.
 2. In the Windhawk app, choose to create/paste a new custom mod.
-3. Paste in the contents of [`sleektabs.wh.cpp`](sleektabs.wh.cpp).
+3. Paste in the contents of [`sleekwintabs.wh.cpp`](sleekwintabs.wh.cpp).
 4. Save and enable it.
 
 ## How it works

@@ -1,8 +1,8 @@
 // ==WindhawkMod==
-// @id              sleek-tabs
-// @name            Sleek Tabs
+// @id              sleek-wintabs
+// @name            Sleek WinTabs
 // @description     File Explorer tab tweaks: folder name instead of full path, and jump to newly opened tabs (each independently toggleable)
-// @version         1.1.0
+// @version         1.1.1
 // @author          SleekGPX
 // @github          https://github.com/SleekGPX/sleek-windhawk-explorer-tabs
 // @include         explorer.exe
@@ -11,7 +11,7 @@
 
 // ==WindhawkModReadme==
 /*
-# SleekTabs
+# Sleek WinTabs
 
 Two independent File Explorer tab tweaks. Each has its own setting and can be
 turned off without affecting the other.
@@ -129,11 +129,18 @@ struct PendingSelect {
     GUID tabId;
 };
 std::vector<PendingSelect> g_pendingSelects;
-constexpr UINT_PTR kSelectTabTimerId = 0xBEEF;
+UINT_PTR g_selectTabTimerId = 0;
 constexpr UINT kSelectTabDelayMs = 150;
 
-void CALLBACK SelectTabTimerProc(HWND, UINT, UINT_PTR, DWORD) {
-    KillTimer(nullptr, kSelectTabTimerId);
+// NB: SetTimer(NULL, id, ...) ignores the id you pass in on input and hands
+// back a system-assigned id instead - a previous version of this code killed
+// the wrong timer every time (by re-using the input id constant), so the
+// real timer was never cancelled and a fresh, never-cleaned-up timer piled
+// up on every single tab open. Track the id SetTimer actually returns and
+// kill that one, in the proc, via the id the proc itself is handed.
+void CALLBACK SelectTabTimerProc(HWND, UINT, UINT_PTR idEvent, DWORD) {
+    KillTimer(nullptr, idEvent);
+    g_selectTabTimerId = 0;
 
     std::vector<PendingSelect> pending = std::move(g_pendingSelects);
     g_pendingSelects.clear();
@@ -148,7 +155,10 @@ void CALLBACK SelectTabTimerProc(HWND, UINT, UINT_PTR, DWORD) {
 
 void ScheduleSelectTab(void* pThis, GUID tabId) {
     g_pendingSelects.push_back({pThis, tabId});
-    SetTimer(nullptr, kSelectTabTimerId, kSelectTabDelayMs, SelectTabTimerProc);
+    if (!g_selectTabTimerId) {
+        g_selectTabTimerId =
+            SetTimer(nullptr, 0, kSelectTabDelayMs, SelectTabTimerProc);
+    }
 }
 
 using CExplorerFrame_AddTab_t = HRESULT(WINAPI*)(void* pThis,
